@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 02:02:06 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/13 19:50:54 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/13 20:03:13 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 t_server	*server;
 
-void	handle_sig(int sig)
+void	handle(int sig, siginfo_t *info, void *ucontext)
 {
+	(void)*info;
+	(void)*ucontext;
 	if (server->bits < 8)
 	{
 		if (sig == 1)
@@ -24,6 +26,8 @@ void	handle_sig(int sig)
 	}
 	if (server->bits == 8)
 	{
+		if (server->charc == '\0')
+			write(1, "\n", 1);
 		write(1, &server->charc, 1);
 		server->bits = 0;
 		server->charc = 0;
@@ -37,7 +41,8 @@ int	main(void)
 	server = malloc(sizeof(t_server));
 	if (!server)
 		return (1);
-	sa.sa_handler = handle_sig;
+	sa.sa_sigaction = handle;
+	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
