@@ -6,13 +6,13 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/10 06:52:15 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/10 06:55:21 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_char(char c, int pid)
+void	send_char(int pid, char c)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ void	send_char(char c, int pid)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		i--;
+		i++;
 		usleep(500);
 	}
 }
