@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 02:02:06 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/10 06:50:06 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/13 19:50:54 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 t_server	*server;
 
-void	signal_handler(int sig)
+void	handle_sig(int sig)
 {
-	if (sig == SIGUSR2)
+	if (server->bits < 8)
 	{
-		server->charc |= (1 << server->bits);
+		if (sig == 1)
+			server->charc |= (sig << server->bits);
+		server->bits++;
 	}
-	server->bits++;
 	if (server->bits == 8)
 	{
-		if (server->charc == '\0')
-			ft_printf("\n");
-		else
-			ft_printf("%c", server->charc);
-		server->charc = 0;
+		write(1, &server->charc, 1);
 		server->bits = 0;
+		server->charc = 0;
 	}
 }
 
@@ -38,16 +36,12 @@ int	main(void)
 
 	server = malloc(sizeof(t_server));
 	if (!server)
-		return (0);
-	ft_printf("PID: %d\n", getpid());
-	ft_bzero(server, sizeof(t_server));
-	sa.sa_handler = signal_handler;
+		return (1);
+	sa.sa_handler = handle_sig;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+	ft_printf("PID: %d\n", getpid());
 	while (1)
-	{
 		pause();
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/10 06:55:21 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/13 19:45:30 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,31 @@ void	send_char(int pid, char c)
 {
 	int	i;
 
-	i = 0;
-	while (i < 8)
+	i = 7;
+	while (i >= 0)
 	{
-		if (c & (1 << i))
-			kill(pid, SIGUSR2);
-		else
+		if ((c >> i) & 1)
 			kill(pid, SIGUSR1);
-		i++;
+		else
+			kill(pid, SIGUSR2);
 		usleep(500);
+		i--;
 	}
 }
 
 int	main(int ac, char **av)
 {
-	int		pid;
-	size_t	len;
-	size_t	i;
+	int	pid;
+	int	i;
 
 	if (ac != 3)
-		return (write(2, "Usage: ./client <PID> <Message>\n", 32), 1);
+		return (ft_printf("Error\nUsage: <PID> <Message>\n"), 1);
 	pid = ft_atoi(av[1]);
-	if (pid <= 0)
-		return (write(2, "Error: Invalid PID\n", 19), 1);
-	len = ft_strlen(av[2]);
-	if (len > MAX_MSG_SIZE)
-		return (write(2, "Error: Message too long\n", 24), 1);
 	i = 0;
-	while (i <= len)
+	while (av[2][i])
 	{
 		send_char(pid, av[2][i]);
 		i++;
 	}
-	return (0);
+	send_char(pid, av[2][i]);
 }

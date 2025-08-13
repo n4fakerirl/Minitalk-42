@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:59:47 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/10 06:14:33 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/13 19:45:39 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ typedef struct s_server
 {
 	unsigned char	charc;
 	int				bits;
-	pid_t			pid;
-	char			*buf;
-	int				state;
 }					t_server;
 
 #endif
