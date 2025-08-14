@@ -5,91 +5,65 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/08/10 02:02:56 by ocviller          #+#    #+#              #
-#    Updated: 2025/08/10 02:05:39 by ocviller         ###   ########.fr        #
+#    Created: 2025/08/14 18:17:42 by ocviller          #+#    #+#              #
+#    Updated: 2025/08/14 18:19:55 by ocviller         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/01/01 00:00:00 by ocviller          #+#    #+#              #
-#    Updated: 2025/01/01 00:00:00 by ocviller         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME_CLIENT	= client
+NAME_SERVER	= server
+BONUS_CLIENT = bonus_client
+BONUS_SERVER = bonus_server
 
-# Program names
-SERVER		= server
-CLIENT		= client
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror -g
+INCLUDES	= -I includes -I includes/libft -I includes/libft/get_next_line -I includes/libft/ft_printf
 
-# Source files
-SERVER_SRC	= server.c
-CLIENT_SRC	= client.c
-
-# Object files
-SERVER_OBJ	= $(SERVER_SRC:.c=.o)
-CLIENT_OBJ	= $(CLIENT_SRC:.c=.o)
-
-# Libft
 LIBFT_DIR	= includes/libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
-# Headers
-INCLUDES	= -I. -I$(LIBFT_DIR)
+SRC_CLIENT	= src/client.c
+SRC_SERVER	= src/server.c
+SRC_BCLIENT	= bonus/client_bonus.c
+SRC_BSERVER	= bonus/server_bonus.c
 
-# Compiler and flags
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-RM			= rm -f
+OBJ_CLIENT	= $(SRC_CLIENT:.c=.o)
+OBJ_SERVER	= $(SRC_SERVER:.c=.o)
+OBJ_BCLIENT	= $(SRC_BCLIENT:.c=.o)
+OBJ_BSERVER	= $(SRC_BSERVER:.c=.o)
 
-# Colors for pretty output
-RED			= \033[0;31m
-GREEN		= \033[0;32m
-YELLOW		= \033[0;33m
-BLUE		= \033[0;34m
-MAGENTA		= \033[0;35m
-CYAN		= \033[0;36m
-WHITE		= \033[0;37m
-RESET		= \033[0m
+# ========================= Rules ========================= #
 
-# Rules
-all: $(LIBFT) $(SERVER) $(CLIENT)
+all: $(LIBFT) $(NAME_CLIENT) $(NAME_SERVER)
 
 $(LIBFT):
-	@echo "$(YELLOW)Compiling libft...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR)
-	@echo "$(GREEN)Libft compiled successfully!$(RESET)"
 
-$(SERVER): $(SERVER_OBJ) $(LIBFT)
-	@echo "$(BLUE)Linking $(SERVER)...$(RESET)"
-	@$(CC) $(CFLAGS) $(SERVER_OBJ) $(LIBFT) -o $(SERVER)
-	@echo "$(GREEN)$(SERVER) compiled successfully!$(RESET)"
+$(NAME_CLIENT): $(OBJ_CLIENT) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_CLIENT) $(LIBFT) -o $(NAME_CLIENT)
 
-$(CLIENT): $(CLIENT_OBJ) $(LIBFT)
-	@echo "$(BLUE)Linking $(CLIENT)...$(RESET)"
-	@$(CC) $(CFLAGS) $(CLIENT_OBJ) $(LIBFT) -o $(CLIENT)
-	@echo "$(GREEN)$(CLIENT) compiled successfully!$(RESET)"
+$(NAME_SERVER): $(OBJ_SERVER) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_SERVER) $(LIBFT) -o $(NAME_SERVER)
+
+bonus: $(LIBFT) $(BONUS_CLIENT) $(BONUS_SERVER)
+
+$(BONUS_CLIENT): $(OBJ_BCLIENT) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_BCLIENT) $(LIBFT) -o $(BONUS_CLIENT)
+
+$(BONUS_SERVER): $(OBJ_BSERVER) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_BSERVER) $(LIBFT) -o $(BONUS_SERVER)
 
 %.o: %.c
-	@echo "$(CYAN)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	@echo "$(YELLOW)Cleaning object files...$(RESET)"
-	@$(RM) $(SERVER_OBJ) $(CLIENT_OBJ)
+	rm -f $(OBJ_CLIENT) $(OBJ_SERVER) $(OBJ_BCLIENT) $(OBJ_BSERVER)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "$(GREEN)Object files cleaned!$(RESET)"
 
 fclean: clean
-	@echo "$(RED)Full clean...$(RESET)"
-	@$(RM) $(SERVER) $(CLIENT)
+	rm -f $(NAME_CLIENT) $(NAME_SERVER) $(BONUS_CLIENT) $(BONUS_SERVER)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "$(GREEN)Full clean completed!$(RESET)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

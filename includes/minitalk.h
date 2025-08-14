@@ -6,14 +6,14 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:59:47 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/13 19:45:39 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:18:51 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-# include "includes/libft/libft.h"
+# include "libft/libft.h"
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -26,6 +26,7 @@ typedef struct s_server
 {
 	unsigned char	charc;
 	int				bits;
+	char *buf;
 }					t_server;
 
 #endif
