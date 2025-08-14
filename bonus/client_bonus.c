@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/14 19:21:55 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/14 19:53:00 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	send_char(int pid, unsigned char c)
 			if (kill(pid, SIGUSR2) == -1)
 				return (ft_putstr_fd("Error\nCan't send signal.\n", 2), 0);
 		}
+		usleep(100);
 		i--;
 	}
 	return (1);
@@ -58,13 +59,13 @@ int	main(int ac, char **av)
 	sa.sa_handler = hearing;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
 	len = ft_strlen(av[2]);
 	while (i++ < len)
 	{
 		if (!send_char(pid, av[2][i]))
 			return (1);
-		sigaction(SIGUSR1, &sa, NULL);
-		while (ack == 0)
+		while (ack != 1)
 			pause();
 		ack = 0;
 	}
