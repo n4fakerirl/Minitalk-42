@@ -6,13 +6,20 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 02:02:06 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/14 18:18:23 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:18:54 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
 t_server	*server;
+
+void	cleaning(int sig)
+{
+	(void)sig;
+	free(server);
+	exit(0);
+}
 
 void	handle(int sig, siginfo_t *info, void *ucontext)
 {
@@ -57,5 +64,8 @@ int	main(int ac, char **av)
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
+	{
+		signal(SIGINT, cleaning);
 		pause();
+	}
 }

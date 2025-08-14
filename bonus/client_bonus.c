@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/14 19:53:00 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:10:27 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	send_char(int pid, unsigned char c)
 			if (kill(pid, SIGUSR2) == -1)
 				return (ft_putstr_fd("Error\nCan't send signal.\n", 2), 0);
 		}
-		usleep(100);
+		usleep(60);
 		i--;
 	}
 	return (1);
