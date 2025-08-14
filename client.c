@@ -6,13 +6,13 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/13 19:45:30 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:18:33 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_char(int pid, char c)
+void	send_char(int pid, unsigned char c)
 {
 	int	i;
 
