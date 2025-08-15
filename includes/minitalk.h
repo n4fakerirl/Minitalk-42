@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:59:47 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/14 18:18:51 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/15 11:51:07 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-# define MAX_MSG_SIZE SIZE_MAX
-
 typedef struct s_server
 {
-	unsigned char	charc;
+	unsigned char	c;
 	int				bits;
-	char *buf;
+	char			buffer[10000];
+	int				i;
 }					t_server;
 
 #endif
