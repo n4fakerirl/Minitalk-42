@@ -6,18 +6,18 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 21:52:04 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/15 11:17:46 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:09:46 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-int		ack = 0;
+int		g_ack = 0;
 
 void	hearing(int sig)
 {
 	(void)sig;
-	ack = 1;
+	g_ack = 1;
 }
 
 int	send_char(int pid, unsigned char c)
@@ -27,7 +27,7 @@ int	send_char(int pid, unsigned char c)
 	i = 7;
 	while (i >= 0)
 	{
-		ack = 0;
+		g_ack = 0;
 		if ((c >> i) & 1)
 		{
 			if (kill(pid, SIGUSR1) == -1)
@@ -38,7 +38,7 @@ int	send_char(int pid, unsigned char c)
 			if (kill(pid, SIGUSR2) == -1)
 				return (ft_putstr_fd("Error\nCan't send signal.\n", 2), 0);
 		}
-		while (ack != 1)
+		while (g_ack != 1)
 			usleep(10);
 		i--;
 	}
